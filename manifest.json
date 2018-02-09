@@ -1,0 +1,24 @@
+{
+    "manifest_version": 2,
+   
+    "name": "wordmeter",
+    "description": "wordmeter chrome version",
+    "version": "1.0",
+   
+    "browser_action": {
+      "default_icon": "icon.png",
+      "default_popup": "popup.html"
+    },
+    
+    "content_scripts": [
+        {
+          "matches": ["https://news.naver.com/*","http://news.naver.com/*"],
+          "js": ["script.js","jquery-3.3.1.min.js"]
+        }
+    ],
+
+    "permissions": [
+        "tabs",
+        "<all_urls>"
+    ]
+  }
