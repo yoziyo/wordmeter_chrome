@@ -7,33 +7,32 @@ function onWindowLoad() {
     '.bold {font-weight:bold}'+
     '</style>');
 
-    // 툴팁용 데이터 삽입
-    $('<div class="wordmeter_tooltip">툴팁 테스트 입니다.</div>').appendTo('body');
-
     // 혹시 출력된 데이터가 있으면 삭제해줍니다 (뒤로가기 했을경우 대비)
     $('.wordmeter').remove();
 
     // 출력된 코멘트 갯수 확인
     $comment_size = 0;
 
-    // 코멘트 부분은 비동기 방식이므로 타이머를 동작시킴
-    commentTimer = setInterval(function(){
-        // 전체 코멘트 갯수를 임시 변수에 가져옴 
-        $temp_comment_size = $('.u_cbox_comment').length;
-        if($temp_comment_size > $comment_size){
-            // 가져온 갯수가 현재 전체 코멘트 갯수보다 많으면
-            // 워드미터 데이터 가져옴
-            chk_wordmeter($comment_size,$temp_comment_size);
-            $comment_size = $temp_comment_size;
-        }
+    // 초기 상태 uid 추출후 api호출
+    refresh_wordmeter();
 
-        if($temp_comment_size === 0){
-            console.log('timer finish');
-            clearInterval(commentTimer);
-        }
-    },2000);
+    // 더보기 버튼 이벤트
+    $(document).on("click",".u_cbox_btn_more",function(event){
+        refresh_wordmeter();
+    });
 
-    // 코멘트는 동적이라 on 처리로 마우스 오버, 아웃 이벤트 등록
+    // 댓글 재정렬 관련이벤트 (코멘트 시작 인덱스를 0으로 재조정)
+    $(document).on("click",".u_cbox_sort_option_list a,.u_cbox_btn_refresh,.u_cbox_option_list a",function(event){
+        $comment_size = 0;
+        refresh_wordmeter();
+    });
+
+    /////////////////////
+    // 코멘트는 동적이라 이벤트 리스너로 툴팁관련 마우스 오버, 아웃 이벤트 등록
+    // 보류 상태
+    // 툴팁용 데이터 삽입
+    $('<div class="wordmeter_tooltip">툴팁 테스트 입니다.</div>').appendTo('body');
+
     $(document).on("mouseover",".u_cbox_nick",function(event){  
         $('.wordmeter_tooltip').css({ left: event.pageX + 15, top: event.pageY });
         // show_tooltip();
@@ -41,12 +40,6 @@ function onWindowLoad() {
 
     $(document).on("mouseout",".u_cbox_nick",function(event){  
         // hide_tooltip();
-    });
-
-
-    // 아래는 테스트중
-    $(document).on("click",".u_cbox_btn_more",function(event){
-        console.log('more 클릭');
     });
 }
 
@@ -83,7 +76,7 @@ function chk_wordmeter($idx,$comment_size){
             console.log($resultData['result_data']);
 
             for($i=0;$i < $resultData['result_data'].length-1;$i++){
-                $userid = $resultData['result_data']['user_id'];    // user_id
+                $userid = $resultData['result_data'][$i]['user_id'];    // user_id
 
                 // comment 관련
                 $commentResult = $resultData['result_data'][$i]['data']['comments'];
@@ -137,6 +130,24 @@ function chk_wordmeter($idx,$comment_size){
     console.log($uidArray);
 }
 
+// 현재상태에서 워드메터 데이터 접근
+function refresh_wordmeter(){
+    refreshTimer = setInterval(function(){
+        if($('#cbox_module').hasClass('u_cbox')){
+            // 전체 코멘트 갯수를 임시 변수에 가져옴 
+            $temp_comment_size = $('.u_cbox_comment').length;
+            if($temp_comment_size > $comment_size){
+                // 가져온 갯수가 현재 전체 코멘트 갯수보다 많으면
+                // 워드미터 데이터 가져옴
+                chk_wordmeter($comment_size,$temp_comment_size);
+                $comment_size = $temp_comment_size;
+
+                console.log('refresh finish');
+                clearInterval(refreshTimer);
+            }
+        }
+    },1000);
+}
 
 function show_tooltip() {
     $tooltip = $('.wordmeter_tooltip');
