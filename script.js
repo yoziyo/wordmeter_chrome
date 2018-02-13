@@ -102,22 +102,22 @@ function chk_wordmeter($idx,$comment_size){
 
                 // 출력 텍스트 설정
                 if($rank){
-                    $showRank = $rank>10?"<span class='bold'>"+$rank+"</span>":$rank;
+                    $showRank = $rank>=10?"<span class='bold'>"+$rank+"</span>":$rank;
                     $showText = "랭킹 "+$showRank+"위, ";
                 }else{
                     $showText = "";
                 }
 
-                $showCommentCount = $commentCount>10?"<span class='bold'>"+$commentCount+"</span>":$commentCount;
+                $showCommentCount = $commentCount>=10?"<span class='bold'>"+$commentCount+"</span>":$commentCount;
                 $showText += $showCommentCount+"개의 댓글";
 
                 if($memosCount){
-                    $showMemosCount = $memosCount>10?"<span class='bold'>"+$memosCount+"</span>":$memosCount;
+                    $showMemosCount = $memosCount>=10?"<span class='bold'>"+$memosCount+"</span>":$memosCount;
                     $showText += ", "+$memosCount+"개의 메모";
                 }
 
-                $showUpVote = $up_vote_count>10?"<span class='bold'>"+$up_vote_count+"</span>":$up_vote_count;
-                $showDownVote = $down_vote_count>10?"<span class='bold'>"+$down_vote_count+"</span>":$down_vote_count;
+                $showUpVote = $up_vote_count>=10?"<span class='bold'>"+$up_vote_count+"</span>":$up_vote_count;
+                $showDownVote = $down_vote_count>=10?"<span class='bold'>"+$down_vote_count+"</span>":$down_vote_count;
 
                 // 데이터 출력
                 $('._user_id_no_'+$resultData['result_data'][$i]['user_id']+' .u_cbox_info').append('<div class="wordmeter"><a href="'+$link+'" target="_sub">WordMeter : '+$showText+'</a></div>');
