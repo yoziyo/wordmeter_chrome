@@ -120,8 +120,8 @@ function chk_wordmeter($idx,$comment_size){
                 $showDownVote = $down_vote_count>=10?"<span class='bold'>"+$down_vote_count+"</span>":$down_vote_count;
 
                 // 데이터 출력
-                $('._user_id_no_'+$resultData['result_data'][$i]['user_id']+' .u_cbox_info').append('<div class="wordmeter"><a href="'+$link+'" target="_sub">WordMeter : '+$showText+'</a></div>');
-                $('._user_id_no_'+$resultData['result_data'][$i]['user_id']+' .u_cbox_info').append('<div class="wordmeter_vote"><a href="'+$link+'" target="_sub">추천 '+$showUpVote+', 비추천 '+$showDownVote+'</a></div>');
+                $('._user_id_no_'+$resultData['result_data'][$i]['user_id']+' > .u_cbox_comment_box .u_cbox_info').append('<div class="wordmeter"><a href="'+$link+'" target="_sub">WordMeter : '+$showText+'</a></div>');
+                $('._user_id_no_'+$resultData['result_data'][$i]['user_id']+' > .u_cbox_comment_box .u_cbox_info').append('<div class="wordmeter_vote"><a href="'+$link+'" target="_sub">추천 '+$showUpVote+', 비추천 '+$showDownVote+'</a></div>');
             }
         },
     });
